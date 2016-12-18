@@ -17,6 +17,7 @@ $(document).ready(function()
 
 function storeData()
 {
+    var dTableTags = $("table.mainTable"); 
 }
 
 function parse()
@@ -94,7 +95,7 @@ List.prototype.remove = function(position)
     //bad position
     if(position < 0 || position > size)
     {
-        thrown new Error(message.failure);
+        throw new Error(message.failure);
     }
 
     //deleting head
