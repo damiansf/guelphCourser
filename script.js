@@ -18,6 +18,7 @@ $(document).ready(function()
 function storeData()
 {
     var dTableTags = $("table.mainTable"); 
+
 }
 
 function parse()
@@ -81,7 +82,7 @@ List.prototype.insert = function(course)
     return node;
 }
 
-//delete function, deletes at p, returns deleted node(i think)
+//delete function, deletes at p, returns deleted node
 List.prototype.remove = function(position)
 {
     var currentNode = this.head;
