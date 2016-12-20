@@ -1,29 +1,46 @@
 $(document).ready(function()
 {
     //gets html in "body" class
-    var htmlString = $('body').html().toString();
+    var htmlString = $('body').html().toString(),
 
     //The indexOf() method returns the position of the first occurrence of a specified value in a string. This 
     //method returns -1 if the value to search for never occurs.
-    var indexTitle = htmlString.indexOf("Section Selection Results");
-    var indexCourse = htmlString.indexOf("Section Name and Title");
+        indexTitle = htmlString.indexOf("Section Selection Results"),
+        indexCourse = htmlString.indexOf("Section Name and Title");
 
     if (indexTitle != -1 && indexCourse != -1)
     {
-
-        storeData();
+        parseAndStore();
     }
 });
 
-function storeData()
+function parseAndStore()
 {
-    var dTableTags = $("table.mainTable"); 
+    $("#GROUP_Grp_WSS_COURSE_SECTIONS tr").each(function(index){
+        if(index !== 0) //skip the first since fields start at 1
+        {
+            var termText = $("#SEC_TERM_" + index).text(),
+            statText = $("#LIST_VAR2_" + index).text(),
+            nameText = $("#SEC_SHORT_TITLE_" + index).text(),
+            locationText = $("#SEC_LOCATION_" + index).text(),
 
-}
+            meetingLec = $('div.meet.LEC', this).children(),
+            meetingText = "",
 
-function parse()
-{
-    
+            facultyText = $("#SEC_FACULTY_INFO_" + index).text(),
+            availText = $("#LIST_VAR3_" + index).text();
+
+            for(i = 0; i < meetingLec.length; i += 1)
+            {
+                meetingText += $(meetingLec[i]).text() + "\n";
+            }
+
+            console.log(termText+" "+statText+" "+nameText+" "+locationText+" "+facultyText+" "+availText + " ");
+            console.log(meetingText);
+        }
+            
+        
+    });
 }
 
 //course object with course information
@@ -57,8 +74,8 @@ function List()
 //add to list alphabetically, returns added node
 List.prototype.insert = function(course)
 {
-    var node = new Node(course);
-    var currentNode = this.head;
+    var node = new Node(course),
+        currentNode = this.head;
 
     //if empty list
     if(currentNode == null)
@@ -85,13 +102,13 @@ List.prototype.insert = function(course)
 //delete function, deletes at p, returns deleted node
 List.prototype.remove = function(position)
 {
-    var currentNode = this.head;
-    var size = this.size;
-    var count = 0;
-    var message = {failure: 'trying to delete non-existent node'};
-    var lastNode = null;
-    var currentNode = null;
-    var deletedNode = null;
+    var currentNode = this.head,
+        size = this.size,
+        count = 0,
+        message = {failure: 'trying to delete non-existent node'};
+        lastNode = null,
+        currentNode = null,
+        deletedNode = null;
 
     //bad position
     if(position < 0 || position > size)
