@@ -144,6 +144,7 @@ $(document).ready(function()
     if (indexTitle != -1 && indexCourse != -1)
     {
         parseAndStore(allCourses);
+        search("0105 chemistry",allCourses);
 
         /** removes all courses inside it, tests remove function
         while(allCourses.size)
@@ -158,3 +159,37 @@ $(document).ready(function()
         **/
     }
 });
+function search(input,head) 
+{
+    var keySplit = input.split(" ");
+    var tempArr = [];
+    var positionArr = [];
+    var curr = head;
+    for(j = 0;j<head.size;j++)
+    {
+        for(i = 0; i<keySplit.length;i++)
+        {
+            if(head.getNode(j).course.name.toLowerCase().includes(keySplit[i])==true)
+            {
+                if(tempArr.length==0)
+                {
+                    tempArr.push(j);
+                }
+                else if(tempArr.includes(j)==false)
+                {
+                    tempArr.push(j);
+                }
+            }
+            else
+            {
+                tempArr.length = 0;
+                break;
+            }
+        }
+        positionArr+=tempArr;
+    }
+    for(i=0;i<positionArr.length;i++)
+    {
+        console.log(head.getNode(positionArr[i]).course.name);
+    }
+}
