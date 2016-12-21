@@ -193,3 +193,7 @@ function search(input,head)
         console.log(head.getNode(positionArr[i]).course.name);
     }
 }
+function selectCourse()
+{
+    
+}
