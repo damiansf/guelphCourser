@@ -1,5 +1,5 @@
 //course object with course information
-function courseObj(term, stat, name, locat, meetingInfo, faculty, avail)
+function courseObj(term, stat, name, locat, meetingInfo, faculty, avail, selectButton)
 {
     this.term = term;
     this.stat = stat;
@@ -8,6 +8,7 @@ function courseObj(term, stat, name, locat, meetingInfo, faculty, avail)
     this.meetingInfo = meetingInfo;
     this.faculty = faculty;
     this.avail = avail;
+    this.selectButton = selectButton;
 }
 
 //linked list node
@@ -112,7 +113,7 @@ function parseAndStore(allCourses)
 
             facultyText = $("#SEC_FACULTY_INFO_" + index).text(),
             availText = $("#LIST_VAR3_" + index).text();
-
+            selectButton =("LIST_VAR1_" + index);
             for(i = 0; i < meetingLec.length; i += 1)
             {
                 meetingText += $(meetingLec[i]).text() + "\n";
@@ -123,7 +124,7 @@ function parseAndStore(allCourses)
                 meetingText += $(meetingExam[x]).text() + "\n";
             }
 
-            var course = new courseObj(termText, statText, nameText, locationText, meetingText, facultyText, availText);
+            var course = new courseObj(termText, statText, nameText, locationText, meetingText, facultyText, availText, selectButton);
             allCourses.add(course);
         }
     });
@@ -144,7 +145,11 @@ $(document).ready(function()
     if (indexTitle != -1 && indexCourse != -1)
     {
         parseAndStore(allCourses);
-        search("0105 chemistry",allCourses);
+        search("intro",allCourses);
+        selectCourse(allCourses,0);
+        selectCourse(allCourses,5);
+        deSelectCourse(allCourses,0);
+
 
         /** removes all courses inside it, tests remove function
         while(allCourses.size)
@@ -164,7 +169,6 @@ function search(input,head)
     var keySplit = input.split(" ");
     var tempArr = [];
     var positionArr = [];
-    var curr = head;
     for(j = 0;j<head.size;j++)
     {
         for(i = 0; i<keySplit.length;i++)
@@ -193,7 +197,11 @@ function search(input,head)
         console.log(head.getNode(positionArr[i]).course.name);
     }
 }
-function selectCourse()
+function selectCourse(head,nodeNum)
 {
-    
+    document.getElementById(head.getNode(nodeNum).course.selectButton).checked = true;
+}
+function deSelectCourse(head,nodeNum)
+{
+    document.getElementById(head.getNode(nodeNum).course.selectButton).checked = false;
 }
