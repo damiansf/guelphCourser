@@ -108,18 +108,30 @@ function parseAndStore(allCourses)
             locationText = $("#SEC_LOCATION_" + index).text(),
 
             meetingLec = $('div.meet.LEC', this).children(),
+            meetingLab = $('div.meet.LAB', this).children(),
+            meetingSem = $('div.meet.SEM', this).children(),
             meetingExam = $('div.meet.EXAM', this).children(),
             meetingText = "",
 
             facultyText = $("#SEC_FACULTY_INFO_" + index).text(),
             availText = $("#LIST_VAR3_" + index).text();
             selectButton =("LIST_VAR1_" + index);
-            for(i = 0; i < meetingLec.length; i += 1)
+            for(var i = 0; i < meetingLec.length; i += 1)
             {
                 meetingText += $(meetingLec[i]).text() + "\n";
             }
 
-            for(x = 0; x < meetingExam.length; x += 1)
+            for(var k = 0; t < meetingLab.length; t += 1)
+            {
+                meetingText += $(meetingLab[i]).text() + "\n";
+            }
+
+            for(var t = 0; t < meetingSem.length; i += 1)
+            {
+                meetingText += $(meetingSem[i]).text() + "\n";
+            }
+
+            for(var x = 0; x < meetingExam.length; x += 1)
             {
                 meetingText += $(meetingExam[x]).text() + "\n";
             }
@@ -129,7 +141,7 @@ function parseAndStore(allCourses)
         }
     });
 }
-function search(input,head) 
+function search(input,head)
 {
     var keySplit = input.split(" ");
     var tempArr = [];
@@ -195,7 +207,7 @@ $(document).ready(function()
         selectCourse(allCourses,5);
         deSelectCourse(allCourses,0);
         submit();*/
-        
+
 
 
         /** removes all courses inside it, tests remove function
