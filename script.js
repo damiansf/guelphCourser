@@ -206,16 +206,7 @@ $(document).ready(function()
         selectCourse(allCourses,0);
         selectCourse(allCourses,5);
         deSelectCourse(allCourses,0);
-<<<<<<< HEAD
         submit();*/
-
-||||||| merged common ancestors
-        submit();*/
-        
-=======
-        submit();
-        
->>>>>>> CSSBranch
 
 
         //removes all courses inside it, tests remove function
