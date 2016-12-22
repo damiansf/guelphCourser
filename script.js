@@ -121,14 +121,14 @@ function parseAndStore(allCourses)
                 meetingText += $(meetingLec[i]).text() + "\n";
             }
 
-            for(var k = 0; t < meetingLab.length; t += 1)
+            for(var k = 0; k < meetingLab.length; k += 1)
             {
-                meetingText += $(meetingLab[i]).text() + "\n";
+                meetingText += $(meetingLab[k]).text() + "\n";
             }
 
-            for(var t = 0; t < meetingSem.length; i += 1)
+            for(var t = 0; t < meetingSem.length; t += 1)
             {
-                meetingText += $(meetingSem[i]).text() + "\n";
+                meetingText += $(meetingSem[t]).text() + "\n";
             }
 
             for(var x = 0; x < meetingExam.length; x += 1)
@@ -208,17 +208,16 @@ $(document).ready(function()
         deSelectCourse(allCourses,0);
         submit();*/
 
-
         //removes all courses inside it, tests remove function
-        while(allCourses.size)
+        /*while(allCourses.size)
         {
             allCourses.remove(allCourses.size-1);
-        }
+        }*/
         //outputs all the courses in the list, tests the get function
         for(k = 0; k < allCourses.size; k += 1)
         {
-            console.log(allCourses.getNode(k).course.name + "\n");
+            console.log(allCourses.getNode(k).course.meetingInfo + "\n");
         }
-        */
+
     }
 });
