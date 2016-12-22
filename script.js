@@ -129,43 +129,6 @@ function parseAndStore(allCourses)
         }
     });
 }
-
-//main function, runs on page load
-$(document).ready(function()
-{
-    //gets html in "body" class
-    var htmlString = $('body').html().toString(),
-
-    //The indexOf() method returns the position of the first occurrence of a specified value in a string. This
-    //method returns -1 if the value to search for never occurs.
-    indexTitle = htmlString.indexOf("Section Selection Results"),
-    indexCourse = htmlString.indexOf("Section Name and Title");
-
-    var allCourses = new List();
-    if (indexTitle != -1 && indexCourse != -1)
-    {
-        parseAndStore(allCourses);
-        /* Tests search and select/deselecting courses
-        search("intro",allCourses);
-        selectCourse(allCourses,0);
-        selectCourse(allCourses,5);
-        deSelectCourse(allCourses,0);
-        */
-
-
-        /** removes all courses inside it, tests remove function
-        while(allCourses.size)
-        {
-            allCourses.remove(allCourses.size-1);
-        }
-        //outputs all the courses in the list, tests the get function
-        for(k = 0; k < allCourses.size; k += 1)
-        {
-            console.log(allCourses.getNode(k).course.name + "\n");
-        }
-        **/
-    }
-});
 function search(input,head) 
 {
     var keySplit = input.split(" ");
@@ -207,3 +170,44 @@ function deSelectCourse(head,nodeNum)
 {
     document.getElementById(head.getNode(nodeNum).course.selectButton).checked = false;
 }
+function submit()
+{
+    document.datatelform.submit();
+}
+//main function, runs on page load
+$(document).ready(function()
+{
+    //gets html in "body" class
+    var htmlString = $('body').html().toString(),
+
+    //The indexOf() method returns the position of the first occurrence of a specified value in a string. This
+    //method returns -1 if the value to search for never occurs.
+    indexTitle = htmlString.indexOf("Section Selection Results"),
+    indexCourse = htmlString.indexOf("Section Name and Title");
+
+    var allCourses = new List();
+    if (indexTitle != -1 && indexCourse != -1)
+    {
+        parseAndStore(allCourses);
+        /*Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
+        search("intro",allCourses);
+        selectCourse(allCourses,0);
+        selectCourse(allCourses,5);
+        deSelectCourse(allCourses,0);
+        submit();*/
+        
+
+
+        /** removes all courses inside it, tests remove function
+        while(allCourses.size)
+        {
+            allCourses.remove(allCourses.size-1);
+        }
+        //outputs all the courses in the list, tests the get function
+        for(k = 0; k < allCourses.size; k += 1)
+        {
+            console.log(allCourses.getNode(k).course.name + "\n");
+        }
+        **/
+    }
+});
