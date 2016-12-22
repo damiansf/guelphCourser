@@ -116,6 +116,7 @@ function parseAndStore(allCourses)
             facultyText = $("#SEC_FACULTY_INFO_" + index).text(),
             availText = $("#LIST_VAR3_" + index).text();
             selectButton =("LIST_VAR1_" + index);
+
             for(var i = 0; i < meetingLec.length; i += 1)
             {
                 meetingText += $(meetingLec[i]).text() + "\n";
@@ -174,16 +175,19 @@ function search(input,head)
         console.log(head.getNode(positionArr[i]).course.name);
     }
 }
+
+//takes in node number to remove node from all courses
 function selectCourse(allCourses, pickedCourses, nodeNum)
 {
     document.getElementById(allCourses.getNode(nodeNum).course.selectButton).checked = true;
     pickedCourses.add(allCourses.getNode(nodeNum).course);
     allCourses.remove(nodeNum);
-
 }
+
+//takes in node number to remove node from picked courses
 function deSelectCourse(allCourses, pickedCourses, nodeNum)
 {
-    document.getElementById(allCourses.getNode(nodeNum).course.selectButton).checked = false;
+    document.getElementById(pickedCourses.getNode(nodeNum).course.selectButton).checked = false;
     allCourses.add(pickedCourses.getNode(nodeNum).course);
     pickedCourses.remove(nodeNum);
 }
@@ -202,29 +206,29 @@ $(document).ready(function()
     indexTitle = htmlString.indexOf("Section Selection Results"),
     indexCourse = htmlString.indexOf("Section Name and Title");
 
-    var allCourses = new List(); //contains all the courses in the search results
-    var pickedCourses = new List(); //contains all the courses that user has selected to go on calendar
+    var allCourses = new List();
+    var pickedCourses = new List();
+
     if (indexTitle != -1 && indexCourse != -1)
     {
         parseAndStore(allCourses);
-        /**Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
+        /*Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
         search("intro",allCourses);
         selectCourse(allCourses, pickedCourses, 0);
         selectCourse(allCourses, pickedCourses, 5);
-        deSelectCourse(allCourses, pickedCourses, 0);
-        submit();**/
+        deSelectCourse(allCourses, pickedCoureses, 0);
+        submit();*/
 
         //removes all courses inside it, tests remove function
-        /**
-        while(allCourses.size)
+        /*while(allCourses.size)
         {
             allCourses.remove(allCourses.size-1);
-        }
-        outputs all the courses in the list, tests the get function
+        }*/
+        //outputs all the courses in the list, tests the get function
         for(k = 0; k < allCourses.size; k += 1)
         {
             console.log(allCourses.getNode(k).course.meetingInfo + "\n");
         }
-        **/
+
     }
 });
