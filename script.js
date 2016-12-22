@@ -174,13 +174,18 @@ function search(input,head)
         console.log(head.getNode(positionArr[i]).course.name);
     }
 }
-function selectCourse(head,nodeNum)
+function selectCourse(allCourses, pickedCourses, nodeNum)
 {
-    document.getElementById(head.getNode(nodeNum).course.selectButton).checked = true;
+    document.getElementById(allCourses.getNode(nodeNum).course.selectButton).checked = true;
+    pickedCourses.add(allCourses.getNode(nodeNum).course);
+    allCourses.remove(nodeNum);
+
 }
-function deSelectCourse(head,nodeNum)
+function deSelectCourse(allCourses, pickedCourses, nodeNum)
 {
-    document.getElementById(head.getNode(nodeNum).course.selectButton).checked = false;
+    document.getElementById(allCourses.getNode(nodeNum).course.selectButton).checked = false;
+    allCourses.add(pickedCourses.getNode(nodeNum).course);
+    pickedCourses.remove(nodeNum);
 }
 function submit()
 {
@@ -197,27 +202,29 @@ $(document).ready(function()
     indexTitle = htmlString.indexOf("Section Selection Results"),
     indexCourse = htmlString.indexOf("Section Name and Title");
 
-    var allCourses = new List();
+    var allCourses = new List(); //contains all the courses in the search results
+    var pickedCourses = new List(); //contains all the courses that user has selected to go on calendar
     if (indexTitle != -1 && indexCourse != -1)
     {
         parseAndStore(allCourses);
-        /*Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
+        /**Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
         search("intro",allCourses);
-        selectCourse(allCourses,0);
-        selectCourse(allCourses,5);
-        deSelectCourse(allCourses,0);
-        submit();*/
+        selectCourse(allCourses, pickedCourses, 0);
+        selectCourse(allCourses, pickedCourses, 5);
+        deSelectCourse(allCourses, pickedCourses, 0);
+        submit();**/
 
         //removes all courses inside it, tests remove function
-        /*while(allCourses.size)
+        /**
+        while(allCourses.size)
         {
             allCourses.remove(allCourses.size-1);
-        }*/
-        //outputs all the courses in the list, tests the get function
+        }
+        outputs all the courses in the list, tests the get function
         for(k = 0; k < allCourses.size; k += 1)
         {
             console.log(allCourses.getNode(k).course.meetingInfo + "\n");
         }
-
+        **/
     }
 });
