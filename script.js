@@ -206,11 +206,19 @@ $(document).ready(function()
         selectCourse(allCourses,0);
         selectCourse(allCourses,5);
         deSelectCourse(allCourses,0);
+<<<<<<< HEAD
         submit();*/
 
+||||||| merged common ancestors
+        submit();*/
+        
+=======
+        submit();
+        
+>>>>>>> CSSBranch
 
 
-        /** removes all courses inside it, tests remove function
+        //removes all courses inside it, tests remove function
         while(allCourses.size)
         {
             allCourses.remove(allCourses.size-1);
@@ -220,6 +228,6 @@ $(document).ready(function()
         {
             console.log(allCourses.getNode(k).course.name + "\n");
         }
-        **/
+        */
     }
 });
