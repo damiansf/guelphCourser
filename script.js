@@ -145,10 +145,12 @@ $(document).ready(function()
     if (indexTitle != -1 && indexCourse != -1)
     {
         parseAndStore(allCourses);
+        /* Tests search and select/deselecting courses
         search("intro",allCourses);
         selectCourse(allCourses,0);
         selectCourse(allCourses,5);
         deSelectCourse(allCourses,0);
+        */
 
 
         /** removes all courses inside it, tests remove function
