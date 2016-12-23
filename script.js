@@ -147,17 +147,14 @@ function search(input,head)
     var keySplit = input.split(" ");
     var tempArr = [];
     var positionArr = [];
-    for(j = 0;j<head.size;j++)
+
+    for(var j = 0;j < head.size;j += 1)
     {
-        for(i = 0; i<keySplit.length;i++)
+        for(var i = 0; i < keySplit.length;i += 1)
         {
-            if(head.getNode(j).course.name.toLowerCase().includes(keySplit[i])==true)
+            if(head.getNode(j).course.name.toLowerCase().includes(keySplit[i]) == true)
             {
-                if(tempArr.length==0)
-                {
-                    tempArr.push(j);
-                }
-                else if(tempArr.includes(j)==false)
+                if(tempArr.includes(j) == false)
                 {
                     tempArr.push(j);
                 }
@@ -170,7 +167,7 @@ function search(input,head)
         }
         positionArr+=tempArr;
     }
-    for(i=0;i<positionArr.length;i++)
+    for(i = 0;i < positionArr.length;i += 1)
     {
         console.log(head.getNode(positionArr[i]).course.name);
     }
@@ -212,12 +209,12 @@ $(document).ready(function()
     if (indexTitle != -1 && indexCourse != -1)
     {
         parseAndStore(allCourses);
-        /*Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
-        search("intro",allCourses);
+        /*Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's*/
+        search("intro 01",allCourses);
         selectCourse(allCourses, pickedCourses, 0);
         selectCourse(allCourses, pickedCourses, 5);
-        deSelectCourse(allCourses, pickedCoureses, 0);
-        submit();*/
+        deSelectCourse(allCourses, pickedCourses, 0);
+        submit();
 
         //removes all courses inside it, tests remove function
         /*while(allCourses.size)
