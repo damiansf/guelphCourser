@@ -195,6 +195,12 @@ function submit()
 {
     document.datatelform.submit();
 }
+
+function initCalendar()
+{
+    $('div.screen.WESTS04B').append(document.createTextNode("Hello"));
+}
+
 //main function, runs on page load
 $(document).ready(function()
 {
@@ -231,4 +237,6 @@ $(document).ready(function()
         }
 
     }
+
+    initCalendar();
 });
