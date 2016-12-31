@@ -61,23 +61,33 @@ List.prototype.remove = function(i)
     var curr = this.head;
     var prev = null;
 
-    while(i > 0 && curr.next)
+    if(i == 0)
     {
-        i -= 1;
-        prev = curr;
-        curr = curr.next;
+        this.head = curr.next;
     }
-    if(i != 0)
+    else if (i > 0)
+    {
+        while(i > 0 && curr.next)
+        {
+            i -= 1;
+            prev = curr;
+            curr = curr.next;
+        }
+        if(i != 0)
+        {
+            throw new Error();
+        }
+        if(prev && curr.next)
+        {
+            prev.next = curr.next;
+        }
+    }
+    else
     {
         throw new Error();
     }
-    if(prev && curr.next)
-    {
-        prev.next = curr.next;
-    }
     this.size -= 1;
     return curr;
-
 };
 
 List.prototype.getNode = function(i)
