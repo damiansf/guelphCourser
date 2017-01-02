@@ -1,11 +1,13 @@
-//course object with course information
-function courseObj(term, stat, name, locat, meetingInfo, faculty, avail, selectButton)
+function courseObj(term, stat, name, locat, lectureTime, labTime, seminarTime, examTime, faculty, avail, selectButton)
 {
     this.term = term;
     this.stat = stat;
     this.name = name;
     this.locat = locat;
-    this.meetingInfo = meetingInfo;
+    this.lectureTime = lectureTime;
+    this.labTime = labTime;
+    this.seminarTime = seminarTime;
+    this.examTime = examTime;
     this.faculty = faculty;
     this.avail = avail;
     this.selectButton = selectButton;
@@ -61,23 +63,33 @@ List.prototype.remove = function(i)
     var curr = this.head;
     var prev = null;
 
-    while(i > 0 && curr.next)
+    if(i == 0)
     {
-        i -= 1;
-        prev = curr;
-        curr = curr.next;
+        this.head = curr.next;
     }
-    if(i != 0)
+    else if (i > 0)
+    {
+        while(i > 0 && curr.next)
+        {
+            i -= 1;
+            prev = curr;
+            curr = curr.next;
+        }
+        if(i != 0)
+        {
+            throw new Error();
+        }
+        if(prev && curr.next)
+        {
+            prev.next = curr.next;
+        }
+    }
+    else
     {
         throw new Error();
     }
-    if(prev && curr.next)
-    {
-        prev.next = curr.next;
-    }
     this.size -= 1;
     return curr;
-
 };
 
 List.prototype.getNode = function(i)
@@ -111,37 +123,40 @@ function parseAndStore(allCourses)
             meetingLab = $('div.meet.LAB', this).children(),
             meetingSem = $('div.meet.SEM', this).children(),
             meetingExam = $('div.meet.EXAM', this).children(),
-            meetingText = "",
+            meetingLecText = "",
+            meetingLabText = "",
+            meetingSemText = "",
+            meetingExamText = "",
 
             facultyText = $("#SEC_FACULTY_INFO_" + index).text(),
             availText = $("#LIST_VAR3_" + index).text();
             selectButton =("LIST_VAR1_" + index);
-
             for(var i = 0; i < meetingLec.length; i += 1)
             {
-                meetingText += $(meetingLec[i]).text() + "\n";
+                meetingLecText += $(meetingLec[i]).text() + "\n";
             }
 
             for(var k = 0; k < meetingLab.length; k += 1)
             {
-                meetingText += $(meetingLab[k]).text() + "\n";
+                meetingLabText += $(meetingLab[k]).text() + "\n";
             }
 
             for(var t = 0; t < meetingSem.length; t += 1)
             {
-                meetingText += $(meetingSem[t]).text() + "\n";
+                meetingSemText += $(meetingSem[t]).text() + "\n";
             }
 
             for(var x = 0; x < meetingExam.length; x += 1)
             {
-                meetingText += $(meetingExam[x]).text() + "\n";
+                meetingExamText += $(meetingExam[x]).text() + "\n";
             }
 
-            var course = new courseObj(termText, statText, nameText, locationText, meetingText, facultyText, availText, selectButton);
+            var course = new courseObj(termText, statText, nameText, locationText, meetingLecText, meetingLabText, meetingSemText, meetingExamText, facultyText, availText, selectButton);
+            console.warn(availText);
             allCourses.add(course);
         }
     });
-}
+}   
 function search(input,head)
 {
     var keySplit = input.split(" ");
@@ -182,6 +197,8 @@ function selectCourse(allCourses, pickedCourses, nodeNum)
     document.getElementById(allCourses.getNode(nodeNum).course.selectButton).checked = true;
     pickedCourses.add(allCourses.getNode(nodeNum).course);
     allCourses.remove(nodeNum);
+    updateCalendar(pickedCourses);
+
 }
 
 //takes in node number to remove node from picked courses
@@ -190,7 +207,9 @@ function deSelectCourse(allCourses, pickedCourses, nodeNum)
     document.getElementById(pickedCourses.getNode(nodeNum).course.selectButton).checked = false;
     allCourses.add(pickedCourses.getNode(nodeNum).course);
     pickedCourses.remove(nodeNum);
+    updateCalendar(pickedCourses);
 }
+
 function submit()
 {
     document.datatelform.submit();
@@ -201,6 +220,22 @@ function initCalendar()
     $('#content').before( $('<div>').load(chrome.extension.getURL('table.html')));
     $('head').append($('<style>').load(chrome.extension.getURL('table.css')));
     $('#content').hide();
+
+}
+
+function updateCalendar(pickedCourses)
+{
+    calendarClear();
+    var curr = pickedCourses.head.course;
+    while(curr !== null)
+    {
+        addToDisplay(curr);
+        curr = curr.next;
+    }
+}
+
+function addToDisplay(curr)
+{
 
 }
 
