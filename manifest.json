@@ -4,7 +4,7 @@
     "name": "guelphCourser",
     "description": "Changes UI and functionality of webadvisor uoguelph for the better",
     "version": "1.0",
- 
+
     "content_scripts": [
         {
             "matches": ["https://webadvisor.uoguelph.ca/*"],
@@ -12,7 +12,7 @@
             "js": ["jquery-3.1.1.min.js","contentscript.js"]
         }
     ],
-    "web_accessible_resources": ["script.js"],
+    "web_accessible_resources": ["table.html", "table.css"],
     "permissions": [
         "activeTab"
     ]
