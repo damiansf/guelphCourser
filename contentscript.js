@@ -152,27 +152,34 @@ function parseAndStore(allCourses)
             }
 
             var course = new courseObj(termText, statText, nameText, locationText, meetingLecText, meetingLabText, meetingSemText, meetingExamText, facultyText, availText, selectButton);
-            console.warn(availText);
             allCourses.add(course);
         }
     });
 }   
-function search(input,head)
+function search(input,head, pickedCourses)
 {
     var keySplit = input.split(" ");
     var tempArr = [];
     var positionArr = [];
-    for(j = 0;j<head.size;j++)
+    var tbl = document.createElement('table');
+    var rowDetails = null;
+    var rowEl = [];
+    
+    tbl.style.width = '100%';
+    tbl.id = "searchResults";
+    tbl.setAttribute('border', '1');
+    if(document.getElementById("searchResults") != null)
     {
-        for(i = 0; i<keySplit.length;i++)
+        document.getElementById("searchResults").parentNode.removeChild(document.getElementById("searchResults"));
+    }
+    for(var j = 0;j < head.size;j += 1)
+    {
+        tempArr.length = 0;
+        for(var i = 0; i < keySplit.length;i += 1)
         {
-            if(head.getNode(j).course.name.toLowerCase().includes(keySplit[i])==true)
+            if(head.getNode(j).course.name.toLowerCase().includes(keySplit[i].toLowerCase()) == true)
             {
-                if(tempArr.length==0)
-                {
-                    tempArr.push(j);
-                }
-                else if(tempArr.includes(j)==false)
+                if(tempArr.includes(j) == false)
                 {
                     tempArr.push(j);
                 }
@@ -183,22 +190,39 @@ function search(input,head)
                 break;
             }
         }
-        positionArr+=tempArr;
+        positionArr = positionArr.concat(tempArr);
     }
-    for(i=0;i<positionArr.length;i++)
+    rowDetails = tbl.insertRow();  // DOM method for creating table rows
+    rowDetails.insertCell().textContent = "Term";
+    rowDetails.insertCell().textContent = "Status"; 
+    rowDetails.insertCell().textContent = "Name";
+    rowDetails.insertCell().textContent = "Location";
+    rowDetails.insertCell().textContent = "Meeting Information"; 
+    rowDetails.insertCell().textContent = "Faculty";
+    rowDetails.insertCell().textContent = "Avalible/Capacity";
+    for(var i = 0;i < positionArr.length;i += 1)
     {
-        console.log(head.getNode(positionArr[i]).course.name);
+        rowEl[i] = tbl.insertRow();  // DOM method for creating table rows
+        rowEl[i].id = positionArr[i];
+        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.term; 
+        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.stat; 
+        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.name;
+        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.locat;
+        rowEl[i].insertCell().innerText = head.getNode(positionArr[i]).course.lectureTime + head.getNode(positionArr[i]).course.labTime + head.getNode(positionArr[i]).course.seminarTime + head.getNode(positionArr[i]).course.examTime;
+        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.faculty;
+        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.avail;  
+        rowEl[i].addEventListener("click",function(){selectCourse(head,pickedCourses,this.id);});
     }
+    document.getElementById("main").appendChild(tbl);
 }
-
 //takes in node number to remove node from all courses
 function selectCourse(allCourses, pickedCourses, nodeNum)
 {
     document.getElementById(allCourses.getNode(nodeNum).course.selectButton).checked = true;
     pickedCourses.add(allCourses.getNode(nodeNum).course);
     allCourses.remove(nodeNum);
-    updateCalendar(pickedCourses);
-
+    search(document.getElementById("search").value,allCourses,pickedCourses);
+    selectedCoursesTable(allCourses,pickedCourses);
 }
 
 //takes in node number to remove node from picked courses
@@ -207,9 +231,45 @@ function deSelectCourse(allCourses, pickedCourses, nodeNum)
     document.getElementById(pickedCourses.getNode(nodeNum).course.selectButton).checked = false;
     allCourses.add(pickedCourses.getNode(nodeNum).course);
     pickedCourses.remove(nodeNum);
-    updateCalendar(pickedCourses);
+    search(document.getElementById("search").value,allCourses,pickedCourses);
+    selectedCoursesTable(allCourses,pickedCourses);
 }
+function selectedCoursesTable(head, pickedCourses)
+{
+    var tbl = document.createElement('table');
+    var rowDetails = null;
+    var rowEl = [];
 
+    tbl.id = "selectedCourses";
+    tbl.style.width = '100%';
+    tbl.setAttribute('border', '1');
+    if(document.getElementById("selectedCourses") != null)
+    {
+        document.getElementById("selectedCourses").parentNode.removeChild(document.getElementById("selectedCourses"));
+    }
+    rowDetails = tbl.insertRow();  // DOM method for creating table rows
+    rowDetails.insertCell().textContent = "Term";
+    rowDetails.insertCell().textContent = "Status"; 
+    rowDetails.insertCell().textContent = "Name";
+    rowDetails.insertCell().textContent = "Location";
+    rowDetails.insertCell().textContent = "Meeting Information"; 
+    rowDetails.insertCell().textContent = "Faculty";
+    rowDetails.insertCell().textContent = "Avalible/Capacity";
+    for(var i = 0;i < pickedCourses.size;i += 1)
+    {
+        rowEl[i] = tbl.insertRow();  // DOM method for creating table rows
+        rowEl[i].id = i;
+        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.term; 
+        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.stat; 
+        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.name;
+        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.locat;
+        rowEl[i].insertCell().innerText = pickedCourses.getNode(i).course.lectureTime + pickedCourses.getNode(i).course.labTime + pickedCourses.getNode(i).course.seminarTime + pickedCourses.getNode(i).course.examTime;
+        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.faculty;
+        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.avail;  
+        rowEl[i].addEventListener("click",function(){deSelectCourse(head,pickedCourses,this.id);});
+    }
+    document.getElementById("main").appendChild(tbl);
+}
 function submit()
 {
     document.datatelform.submit();
@@ -256,6 +316,12 @@ $(document).ready(function()
     if (indexTitle != -1 && indexCourse != -1)
     {
         parseAndStore(allCourses);
+        document.getElementById("content").style.visibility="hidden";
+        var input = document.createElement('input'); 
+        input.type = "text";   
+        input.id = "search"; 
+        document.getElementById("main").appendChild(input);  
+        document.getElementById("search").addEventListener("keyup", function(){search(document.getElementById("search").value,allCourses,pickedCourses);});
         /*Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
         search("intro",allCourses);
         selectCourse(allCourses, pickedCourses, 0);
