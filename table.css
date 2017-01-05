@@ -11,20 +11,7 @@
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
-#search { 
-    position:absolute;
-    top:0;
-    right:0;
-    background-color: yellow;
-}
-#searchResults {
-	bg: yellow;
-	border: 1px solid black;
-}
-#selectedCourses {
-	background-color: yellow;
-	border: 1px solid black;
-}
+
 table#gridlayout {
 	border: 1px solid black;
 	/*width: 650px;*/
@@ -98,4 +85,10 @@ div#schedulegrid div.slot {
 div#schedulegrid div.slot div {
 	font-size: 8pt;
 	padding: 1px 1px 0px 1px;
+}
+
+div#schedulegrid div.studentinfo {
+	text-align: right;
+	font-size: 10pt;
+	padding-top: 5px;
 }
