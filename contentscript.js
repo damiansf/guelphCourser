@@ -303,22 +303,22 @@ function getAllTimes(course)
     var allTimes = {};
     if(course.lectureTime)
     {
-        allTimes.lecTime = getSingleTime({time:course.lectureTime});
+        allTimes.lecTime = getSingleTime(course.lectureTime); //put in a
     }
     if(course.labTime)
     {
-        allTimes.labTime = getSingleTime({time:course.labTime});
+        allTimes.labTime = getSingleTime(course.labTime);
     }
 
     if(course.semTime)
     {
-        allTimes.semTime = getSingleTime({time:course.seminarTime});
+        allTimes.semTime = getSingleTime(course.seminarTime);
     }
 
     return allTimes;
 }
 
-function getSingleTime(course)
+function getSingleTime(time)
 {
     let dayEnum = {"Mon": 0,"Tues": 1,"Wed": 2,"Thur": 3,"Fri": 4};
 
@@ -326,7 +326,7 @@ function getSingleTime(course)
     var days = [];
 
     //breaks down time selection by line
-    var timeBlock = course.time.split('\n');
+    var timeBlock = time.split('\n');
 
     //takes first line of time section, translates days to numbers and returns an array of them
     timeBlock[0].split(/[\s,]+/).forEach(function(key){ //splits by spaces and commas
