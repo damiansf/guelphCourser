@@ -214,6 +214,7 @@ function search(input,head, pickedCourses)
         rowEl[i].addEventListener("click",function(){selectCourse(head,pickedCourses,this.id);});
     }
     document.getElementById("searchPanel").appendChild(tbl);
+    console.warn(document.getElementById("searchPanel").clientWidth);
 }
 //takes in node number to remove node from all courses
 function selectCourse(allCourses, pickedCourses, nodeNum)
@@ -313,7 +314,6 @@ $(document).ready(function()
 
     if (indexTitle != -1 && indexCourse != -1)
     {
-        console.warn(document.getElementById("content").clientWidth,document.getElementById("content").clientHeight);
         parseAndStore(allCourses);
         initCalendar();
         var input = document.createElement('input'); 
