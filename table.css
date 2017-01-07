@@ -11,13 +11,51 @@
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
-
+#submitButton{
+	background-color: black;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 16px;
+}
+div#content{
+	margin:0;
+	padding:0;
+	min-height:650px;
+}
+#search { 
+    position:absolute;
+    top:0;
+    right:0;
+    background-color: yellow;
+}
+#searchResults {
+	background-color: yellow;
+	border: 1px solid black;
+}
+div#searchPanel{
+	vertical-align: top;
+	position: relative;
+	float:right;
+	transform-origin: top right;
+	transform: scale(0.8,0.8);
+	margin-left: auto;
+	margin-right: auto;
+}
+#selectedCourses {
+	background-color: yellow;
+	border: 1px solid black;
+}
 table#gridlayout {
 	border: 1px solid black;
 	/*width: 650px;*/
 	/*border-collapse: separate;*/
 }
-
 table#gridlayout col.time {
 	width: 50px;
 }
@@ -68,6 +106,10 @@ table#gridlayout tbody td div.time {
 
 div#schedulegrid {
 	position: relative;
+	vertical-align: top;
+	float:left;
+	transform-origin: top left;
+	transform: scale(0.6,0.6);
 	margin-left: auto;
 	margin-right: auto;
 	width: 652px;

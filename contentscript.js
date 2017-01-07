@@ -165,7 +165,7 @@ function search(input,head, pickedCourses)
     var rowDetails = null;
     var rowEl = [];
     
-    tbl.style.width = '100%';
+    tbl.style.maxWidth = '100px';
     tbl.id = "searchResults";
     tbl.setAttribute('border', '1');
     if(document.getElementById("searchResults") != null)
@@ -213,7 +213,7 @@ function search(input,head, pickedCourses)
         rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.avail;  
         rowEl[i].addEventListener("click",function(){selectCourse(head,pickedCourses,this.id);});
     }
-    document.getElementById("main").appendChild(tbl);
+    document.getElementById("searchPanel").appendChild(tbl);
 }
 //takes in node number to remove node from all courses
 function selectCourse(allCourses, pickedCourses, nodeNum)
@@ -268,7 +268,7 @@ function selectedCoursesTable(head, pickedCourses)
         rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.avail;  
         rowEl[i].addEventListener("click",function(){deSelectCourse(head,pickedCourses,this.id);});
     }
-    document.getElementById("main").appendChild(tbl);
+    document.getElementById("schedulegrid").appendChild(tbl);
 }
 function submit()
 {
@@ -280,7 +280,6 @@ function initCalendar()
     $('#content').before( $('<div>').load(chrome.extension.getURL('table.html')));
     $('head').append($('<style>').load(chrome.extension.getURL('table.css')));
     $('#content').hide();
-
 }
 
 function updateCalendar(pickedCourses)
@@ -298,7 +297,6 @@ function addToDisplay(curr)
 {
 
 }
-
 //main function, runs on page load
 $(document).ready(function()
 {
@@ -315,13 +313,17 @@ $(document).ready(function()
 
     if (indexTitle != -1 && indexCourse != -1)
     {
+        console.warn(document.getElementById("content").clientWidth,document.getElementById("content").clientHeight);
         parseAndStore(allCourses);
-        document.getElementById("content").style.visibility="hidden";
+        initCalendar();
         var input = document.createElement('input'); 
         input.type = "text";   
         input.id = "search"; 
         document.getElementById("main").appendChild(input);  
         document.getElementById("search").addEventListener("keyup", function(){search(document.getElementById("search").value,allCourses,pickedCourses);});
+        document.getElementById("submitButton").addEventListener("click", function(){submit();});
+        //search("",allCourses,pickedCourses);
+        //selectedCoursesTable(allCourses,pickedCourses);
         /*Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
         search("intro",allCourses);
         selectCourse(allCourses, pickedCourses, 0);
@@ -341,10 +343,6 @@ $(document).ready(function()
             console.log(allCourses.getNode(k).course.meetingInfo + "\n");
         }
         */
-
-
-        initCalendar();
-
     }
 
 });

@@ -8,9 +8,11 @@
     </head>
     <body id="class_schedule">
         <div id="content">
-            <h1 style="text-align: center;">Class Schedule Grid</h1>
+            <div id="searchPanel">
+                <input type="text" name="fname">
+            </div>
             <div id="schedulegrid">
-
+                <h1 style="text-align: center;">Class Schedule Grid</h1>
                 <div id="courseslots">
                 </div>
                 <table id="gridlayout" border="0" cellpadding="0" cellspacing="0">
@@ -260,6 +262,8 @@
                     </tbody>
                 </table>
                 <div class="studentinfo"><span id="semester"></span>,&nbsp;<span id="studentname"></span></div>
+                <button type="button" id="submitButton">Submit</button>
+                <h1 style="text-align: center;">Selected Courses</h1>
             </div>
         </div>
 
