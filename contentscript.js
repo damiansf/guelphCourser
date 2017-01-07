@@ -155,7 +155,7 @@ function parseAndStore(allCourses)
             allCourses.add(course);
         }
     });
-}   
+}
 function search(input,head, pickedCourses)
 {
     var keySplit = input.split(" ");
@@ -164,7 +164,7 @@ function search(input,head, pickedCourses)
     var tbl = document.createElement('table');
     var rowDetails = null;
     var rowEl = [];
-    
+
     tbl.style.width = '100%';
     tbl.id = "searchResults";
     tbl.setAttribute('border', '1');
@@ -194,23 +194,23 @@ function search(input,head, pickedCourses)
     }
     rowDetails = tbl.insertRow();  // DOM method for creating table rows
     rowDetails.insertCell().textContent = "Term";
-    rowDetails.insertCell().textContent = "Status"; 
+    rowDetails.insertCell().textContent = "Status";
     rowDetails.insertCell().textContent = "Name";
     rowDetails.insertCell().textContent = "Location";
-    rowDetails.insertCell().textContent = "Meeting Information"; 
+    rowDetails.insertCell().textContent = "Meeting Information";
     rowDetails.insertCell().textContent = "Faculty";
     rowDetails.insertCell().textContent = "Avalible/Capacity";
     for(var i = 0;i < positionArr.length;i += 1)
     {
         rowEl[i] = tbl.insertRow();  // DOM method for creating table rows
         rowEl[i].id = positionArr[i];
-        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.term; 
-        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.stat; 
+        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.term;
+        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.stat;
         rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.name;
         rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.locat;
         rowEl[i].insertCell().innerText = head.getNode(positionArr[i]).course.lectureTime + head.getNode(positionArr[i]).course.labTime + head.getNode(positionArr[i]).course.seminarTime + head.getNode(positionArr[i]).course.examTime;
         rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.faculty;
-        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.avail;  
+        rowEl[i].insertCell().textContent = head.getNode(positionArr[i]).course.avail;
         rowEl[i].addEventListener("click",function(){selectCourse(head,pickedCourses,this.id);});
     }
     document.getElementById("main").appendChild(tbl);
@@ -249,23 +249,23 @@ function selectedCoursesTable(head, pickedCourses)
     }
     rowDetails = tbl.insertRow();  // DOM method for creating table rows
     rowDetails.insertCell().textContent = "Term";
-    rowDetails.insertCell().textContent = "Status"; 
+    rowDetails.insertCell().textContent = "Status";
     rowDetails.insertCell().textContent = "Name";
     rowDetails.insertCell().textContent = "Location";
-    rowDetails.insertCell().textContent = "Meeting Information"; 
+    rowDetails.insertCell().textContent = "Meeting Information";
     rowDetails.insertCell().textContent = "Faculty";
     rowDetails.insertCell().textContent = "Avalible/Capacity";
     for(var i = 0;i < pickedCourses.size;i += 1)
     {
         rowEl[i] = tbl.insertRow();  // DOM method for creating table rows
         rowEl[i].id = i;
-        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.term; 
-        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.stat; 
+        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.term;
+        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.stat;
         rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.name;
         rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.locat;
         rowEl[i].insertCell().innerText = pickedCourses.getNode(i).course.lectureTime + pickedCourses.getNode(i).course.labTime + pickedCourses.getNode(i).course.seminarTime + pickedCourses.getNode(i).course.examTime;
         rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.faculty;
-        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.avail;  
+        rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.avail;
         rowEl[i].addEventListener("click",function(){deSelectCourse(head,pickedCourses,this.id);});
     }
     document.getElementById("main").appendChild(tbl);
@@ -279,24 +279,89 @@ function initCalendar()
 {
     $('#content').before( $('<div>').load(chrome.extension.getURL('table.html')));
     $('head').append($('<style>').load(chrome.extension.getURL('table.css')));
-    $('#content').hide();
+    //$('#content').hide(); //this hides the content div
 
 }
 
 function updateCalendar(pickedCourses)
 {
+    //clear the entire claendar
     calendarClear();
+    //add the courses from the head of pickedCourses list
     var curr = pickedCourses.head.course;
     while(curr !== null)
     {
-        addToDisplay(curr);
+        getAllTimes(curr.course);
+
         curr = curr.next;
     }
 }
 
-function addToDisplay(curr)
+//gets all time information from lectures, labs and seminars
+function getAllTimes(course)
 {
+    var allTimes = {};
+    if(course.lectureTime)
+    {
+        allTimes.lecTime = getSingleTime({time:course.lectureTime});
+    }
+    if(course.labTime)
+    {
+        allTimes.labTime = getSingleTime({time:course.labTime});
+    }
 
+    if(course.semTime)
+    {
+        allTimes.semTime = getSingleTime({time:course.seminarTime});
+    }
+
+    return allTimes;
+}
+
+function getSingleTime(course)
+{
+    let dayEnum = {"Mon": 0,"Tues": 1,"Wed": 2,"Thur": 3,"Fri": 4};
+
+    //parsing the object information to get times
+    var days = [];
+
+    //breaks down time selection by line
+    var timeBlock = course.time.split('\n');
+
+    //takes first line of time section, translates days to numbers and returns an array of them
+    timeBlock[0].split(/[\s,]+/).forEach(function(key){ //splits by spaces and commas
+        if(key in dayEnum)
+        {
+            days.push(dayEnum[key]);
+        }
+    });
+
+    //get time from second line, this will always be the same(in format) so i will be taking it by position
+    var timeStart = Number(timeBlock[1].slice(0,2)+timeBlock[1].slice(3,5));
+    var timeEnd = Number(timeBlock[1].slice(10,12)+timeBlock[1].slice(13,15));
+
+    //timestart time adjuster(accounting for 12PM and AM weirdness)
+    if(timeBlock[1].slice(5,7) === "PM" && !(timeStart >= 1200 && timeStart <= 1259))
+    {
+        timeStart += 1200;
+    }
+    else if(timeBlock[1].slice(5,7) === "AM" && (timeStart >= 1200 && timeStart <= 1259))
+    {
+        timeStart -= 1200;
+    }
+
+    //timeend time adjuster(accounting for 12PM and AM weirdness)
+    if(timeBlock[1].slice(15,17) === "PM" && !(timeEnd >= 1200 && timeEnd <= 1259))
+    {
+        timeEnd += 1200;
+    }
+    else if(timeBlock[1].slice(15,17) === "AM" && (timeEnd >= 1200 && timeEnd <= 1259))
+    {
+        timeEnd -= 1200;
+    }
+
+    //return an object with all the time information
+    return {days:days, timeStart:timeStart, timeEnd:timeEnd};
 }
 
 //main function, runs on page load
@@ -316,11 +381,11 @@ $(document).ready(function()
     if (indexTitle != -1 && indexCourse != -1)
     {
         parseAndStore(allCourses);
-        document.getElementById("content").style.visibility="hidden";
-        var input = document.createElement('input'); 
-        input.type = "text";   
-        input.id = "search"; 
-        document.getElementById("main").appendChild(input);  
+        //document.getElementById("content").style.visibility="hidden";
+        var input = document.createElement('input');
+        input.type = "text";
+        input.id = "search";
+        document.getElementById("main").appendChild(input);
         document.getElementById("search").addEventListener("keyup", function(){search(document.getElementById("search").value,allCourses,pickedCourses);});
         /*Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
         search("intro",allCourses);
@@ -343,8 +408,8 @@ $(document).ready(function()
         */
 
 
-        initCalendar();
-
+        //initCalendar();
+        getAllTimes(allCourses.head.next.course); //testing it with just the head node
     }
 
 });
