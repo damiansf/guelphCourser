@@ -158,12 +158,12 @@ function parseAndStore(allCourses)
 }   
 function search(input,head, pickedCourses)
 {
-    var keySplit = input.split(" ");
-    var tempArr = [];
-    var positionArr = [];
-    var tbl = document.createElement('table');
-    var rowDetails = null;
-    var rowEl = [];
+    var keySplit = input.split(" "),
+    tempArr = [],
+    positionArr = [],
+    tbl = document.createElement('table'),
+    rowDetails = null,
+    rowEl = [];
     
     tbl.style.maxWidth = '100px';
     tbl.id = "searchResults";
@@ -214,7 +214,6 @@ function search(input,head, pickedCourses)
         rowEl[i].addEventListener("click",function(){selectCourse(head,pickedCourses,this.id);});
     }
     document.getElementById("searchPanel").appendChild(tbl);
-    console.warn(document.getElementById("searchPanel").clientWidth);
 }
 //takes in node number to remove node from all courses
 function selectCourse(allCourses, pickedCourses, nodeNum)
@@ -222,7 +221,7 @@ function selectCourse(allCourses, pickedCourses, nodeNum)
     document.getElementById(allCourses.getNode(nodeNum).course.selectButton).checked = true;
     pickedCourses.add(allCourses.getNode(nodeNum).course);
     allCourses.remove(nodeNum);
-    search(document.getElementById("search").value,allCourses,pickedCourses);
+    search(document.getElementById("searchBar").value,allCourses,pickedCourses);
     selectedCoursesTable(allCourses,pickedCourses);
 }
 
@@ -232,7 +231,7 @@ function deSelectCourse(allCourses, pickedCourses, nodeNum)
     document.getElementById(pickedCourses.getNode(nodeNum).course.selectButton).checked = false;
     allCourses.add(pickedCourses.getNode(nodeNum).course);
     pickedCourses.remove(nodeNum);
-    search(document.getElementById("search").value,allCourses,pickedCourses);
+    search(document.getElementById("searchBar").value,allCourses,pickedCourses);
     selectedCoursesTable(allCourses,pickedCourses);
 }
 function selectedCoursesTable(head, pickedCourses)
@@ -273,9 +272,8 @@ function selectedCoursesTable(head, pickedCourses)
 }
 function submit()
 {
-    document.datatelform.submit();
+    document.forms['datatelform'].submit();
 }
-
 function initCalendar()
 {
     $('#content').before( $('<div>').load(chrome.extension.getURL('table.html')));
@@ -314,16 +312,16 @@ $(document).ready(function()
 
     if (indexTitle != -1 && indexCourse != -1)
     {
-        parseAndStore(allCourses);
         initCalendar();
-        var input = document.createElement('input'); 
-        input.type = "text";   
-        input.id = "search"; 
-        document.getElementById("main").appendChild(input);  
-        document.getElementById("search").addEventListener("keyup", function(){search(document.getElementById("search").value,allCourses,pickedCourses);});
-        document.getElementById("submitButton").addEventListener("click", function(){submit();});
-        //search("",allCourses,pickedCourses);
-        //selectedCoursesTable(allCourses,pickedCourses);
+        $(document).on('keyup', '#searchBar', function(e)
+        {
+            search(document.getElementById("searchBar").value,allCourses,pickedCourses);
+        });
+        $(document).on('mouseup', '#submitButton', function(e)
+        {
+            submit();
+        });
+        parseAndStore(allCourses);
         /*Tests search and select/deselecting courses, tested using winter 2017 Accounting as search param's
         search("intro",allCourses);
         selectCourse(allCourses, pickedCourses, 0);

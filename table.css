@@ -11,10 +11,6 @@
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
-#temp{
-	width:460px;
-	height:30px;
-}
 #submitButton{
 	background-color: black;
     border: none;
@@ -32,15 +28,19 @@ div#content{
 	padding:0; 
 	vertical-align:top; 
 }
-#search { 
+#searchBar { 
     position:absolute;
     top:0;
     right:0;
-    background-color: yellow;
+    width:461px;
+    height:39px;
 }
 #searchResults {
-	background-color: yellow;
 	border: 1px solid black;
+	max-width: 580px;
+	min-width: 580px;
+	min-height: 34.4px;
+	max-height: 34.4px;
 }
 div#searchPanel{
 	max-width: 580px;
@@ -50,6 +50,7 @@ div#searchPanel{
 	vertical-align: top;
 	position: absolute;
 	right:0;
+	top:42px;
 	transform-origin: top right;
 	transform: scale(0.8,0.8);
 	margin-left: auto;
@@ -63,7 +64,6 @@ div#searchParent{
 	margin-right: auto;
 }
 #selectedCourses {
-	background-color: yellow;
 	border: 1px solid black;
 }
 table#gridlayout {
