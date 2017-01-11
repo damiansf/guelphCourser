@@ -134,23 +134,34 @@ function parseAndStore(allCourses)
             for(var i = 0; i < meetingLec.length; i += 1)
             {
                 meetingLecText += $(meetingLec[i]).text() + "\n";
+                if(i==meetingLec.length-1)
+                {
+                    meetingLecText+="\n";
+                }
             }
 
             for(var k = 0; k < meetingLab.length; k += 1)
             {
                 meetingLabText += $(meetingLab[k]).text() + "\n";
+                if(k==meetingLab.length-1)
+                {
+                    meetingLabText+="\n";
+                }
             }
 
             for(var t = 0; t < meetingSem.length; t += 1)
             {
                 meetingSemText += $(meetingSem[t]).text() + "\n";
+                if(t==meetingSem.length-1)
+                {
+                    meetingSemText+="\n";
+                }
             }
 
             for(var x = 0; x < meetingExam.length; x += 1)
             {
                 meetingExamText += $(meetingExam[x]).text() + "\n";
             }
-
             var course = new courseObj(termText, statText, nameText, locationText, meetingLecText, meetingLabText, meetingSemText, meetingExamText, facultyText, availText, selectButton);
             allCourses.add(course);
         }
@@ -268,7 +279,7 @@ function selectedCoursesTable(head, pickedCourses)
         rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.avail;  
         rowEl[i].addEventListener("click",function(){deSelectCourse(head,pickedCourses,this.id);});
     }
-    document.getElementById("schedulegrid").appendChild(tbl);
+    document.getElementById("selectedCoursesDiv").appendChild(tbl);
 }
 function submit()
 {

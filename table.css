@@ -23,6 +23,10 @@
     cursor: pointer;
     font-size: 16px;
 }
+div#selectedCoursesDiv{
+	overflow: scroll;
+	max-height: 500px;
+}
 div#content{
 	margin:0;
 	padding:0; 
