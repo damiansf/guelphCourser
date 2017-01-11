@@ -267,7 +267,7 @@ function selectedCoursesTable(head, pickedCourses)
         rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.faculty;
         rowEl[i].insertCell().textContent = pickedCourses.getNode(i).course.avail;
         rowEl[i].addEventListener("click",function(){deSelectCourse(head,pickedCourses,this.id);});
-    }
+    }b
     document.getElementById("main").appendChild(tbl);
 }
 function submit()
@@ -275,10 +275,17 @@ function submit()
     document.datatelform.submit();
 }
 
-function initCalendar()
+//initializes the table, and refreshes it with new stuff if needed
+function initCalendar(newThing)
 {
-    $('#content').before( $('<div>').load(chrome.extension.getURL('table.html')));
+    var table = $('<div>').load(chrome.extension.getURL('table.html'));
+    if(newThing)
+    {
+        $(table).append(newThing);
+    }
+    $('#content').before(table);
     $('head').append($('<style>').load(chrome.extension.getURL('table.css')));
+
     //$('#content').hide(); //this hides the content div
 
 }
@@ -286,15 +293,83 @@ function initCalendar()
 function updateCalendar(pickedCourses)
 {
     //clear the entire claendar
-    calendarClear();
+    //calendarClear();
     //add the courses from the head of pickedCourses list
-    var curr = pickedCourses.head.course;
+    var curr = pickedCourses.head;
+    var tableSlots = [];
+
+    //fetch all the course slots in array form
     while(curr !== null)
     {
-        getAllTimes(curr.course);
-
+        tableSlots = tableSlots.concat(getAllSlots(getAllTimes(curr.course)));
         curr = curr.next;
     }
+
+    //add all the course slots to a tableslotsdiv
+    var tableSlotsDiv = document.createElement("div");
+    tableSlotsDiv.setAttribute('id','tableSlots');
+    tableSlots.forEach(function(slotDiv){
+        tableSlotsDiv.appendChild(slotDiv);
+    });
+
+    //remove the table if it already exists
+    if(document.getElementById("table_content"))
+    {
+        $("#table_content").remove();
+    }
+
+    //remake the calendar
+    initCalendar(tableSlotsDiv);
+
+}
+
+function getAllSlots(allTimes)
+{
+    var allSlots = [];
+    if("lecTime" in allTimes)
+    {
+        allSlots = allSlots.concat(getSingleSlots(allTimes.lecTime));
+    }
+    if("labTime" in allTimes)
+    {
+        allSlots = allSlots.concat(getSingleSlots(allTimes.labTime));
+    }
+    if("semTime" in allTimes)
+    {
+        allSlots = allSlots.concat(getSingleSlots(allTimes.semTime));
+    }
+    return allSlots;
+}
+
+//not yet fully implemented
+function getSingleSlots(time)
+{
+    var slots = [];
+    time.days.forEach(function(day){
+        var slotDiv = document.createElement('div');
+        slotDiv.setAttribute('id','slotDiv')
+        var xpos = 0;
+        var ypos = 0;
+        var gridStartTime = 480;
+        var startXPos = 51;
+        var startYPos = 22;
+        var xWidth = 120;
+        var yScale = 30;
+        var yBorder = 2;
+        var yHeight = 28;
+        xpos = startXPos + (day)*xWidth;
+        //ypos = startYPos + (startTime - gridStartTime)*(yHeight + yBorder)/yScale;
+        ypos = startYPos + (time.timeStart - gridStartTime)*(yHeight)/yScale;
+        //duration = (endTime - startTime)*yHeight/yScale;
+        duration = (time.timeEnd - time.timeStart)*yHeight/yScale - yBorder;
+        slotDiv.style.left = 0 + 'px';
+        slotDiv.style.top = 100 + 'px';
+        slotDiv.style.height = 100 + 'px';
+        console.log(slotDiv.style.left+" "+slotDiv.style.top+" "+slotDiv.style.height);
+        slots.push(slotDiv);
+    });
+    console.log(slots);
+    return slots;
 }
 
 //gets all time information from lectures, labs and seminars
@@ -303,7 +378,7 @@ function getAllTimes(course)
     var allTimes = {};
     if(course.lectureTime)
     {
-        allTimes.lecTime = getSingleTime(course.lectureTime); //put in a
+        allTimes.lecTime = getSingleTime(course.lectureTime);
     }
     if(course.labTime)
     {
@@ -408,8 +483,9 @@ $(document).ready(function()
         */
 
 
-        //initCalendar();
-        getAllTimes(allCourses.head.next.course); //testing it with just the head node
+        initCalendar();
+        pickedCourses.add(allCourses.head.course);
+        updateCalendar(pickedCourses);
     }
 
 });
