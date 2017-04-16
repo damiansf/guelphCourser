@@ -244,6 +244,8 @@ function deSelectCourse(allCourses, pickedCourses, nodeNum)
     pickedCourses.remove(nodeNum);
     search(document.getElementById("searchBar").value,allCourses,pickedCourses);
     selectedCoursesTable(allCourses,pickedCourses);
+
+    clrUpdateCalendar(pickedCourses);
 }
 function selectedCoursesTable(head, pickedCourses)
 {
@@ -280,6 +282,7 @@ function selectedCoursesTable(head, pickedCourses)
         rowEl[i].addEventListener("click",function(){deSelectCourse(head,pickedCourses,this.id);});
     }
     document.getElementById("selectedCoursesDiv").appendChild(tbl);
+    updateCalendar(pickedCourses);
 }
 
 function submit()
@@ -294,15 +297,13 @@ function initCalendar()
     $('#content').hide();
 }
 
-function updateCalendar(pickedCourses)
-{
-    calendarClear();
-    var curr = pickedCourses.head.course;
-    while(curr !== null)
-    {
-        addToDisplay(curr);
-        curr = curr.next;
+function clrUpdateCalendar(pickedCourses){
+    // remove child nodes course slots, clearing the calendar and reupdating it with courses that weren't removed
+    var courseslots = document.getElementById("courseslots");
+    while (courseslots.firstChild) {
+        courseslots.removeChild(courseslots.firstChild);
     }
+    updateCalendar(pickedCourses);
 }
 
 function updateCalendar(pickedCourses)
@@ -323,16 +324,14 @@ function updateCalendar(pickedCourses)
     //add all the course slots to a tableslotsdiv
     var tableSlotsDiv = document.createElement("div");
     tableSlotsDiv.setAttribute('id','tableSlots');
+
     tableSlots.forEach(function(slotDiv){
         tableSlotsDiv.appendChild(slotDiv);
     });
 
     //add to the table if it already exists
-    if(document.getElementById("table_content"))
-    {
-        $("table_content").append(tableSlotsDiv);
-        console.log(tableSlotsDiv);
-    }
+    document.getElementById("courseslots").append(tableSlotsDiv);
+    console.log(tableSlots);
 
     //remake the calendar
 
@@ -379,9 +378,13 @@ function getSingleSlots(time)
         //duration = (endTime - startTime)*yHeight/yScale;
         duration = (time.timeEnd - time.timeStart)*yHeight/yScale - yBorder;
         // FIXED SIZES ***NOTE
-        slotDiv.style.left = 0 + 'px';
+        slotDiv.style.left = 100 + 'px';
         slotDiv.style.top = 100 + 'px';
         slotDiv.style.height = 100 + 'px';
+        slotDiv.style.width = 100 + 'px';
+        slotDiv.style.position = 'absolute';
+        slotDiv.style.border = '1px solid';
+
         console.log(slotDiv.style.left+" "+slotDiv.style.top+" "+slotDiv.style.height);
         slots.push(slotDiv);
     });
